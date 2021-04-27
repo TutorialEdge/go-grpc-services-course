@@ -1,5 +1,7 @@
 package rocket
 
+// Rocket - should contain things like the ID for the rocket,
+// the name for the rocket and the type of rocket. I.e. Falcon Heavy
 type Rocket struct {
 	ID   string
 	Name string
@@ -14,9 +16,17 @@ type Store interface {
 	DeleteRocket(id string) error
 }
 
-// Service -
+// Service - our rocket service, used for updating our
+// rocket inventory
 type Service struct {
 	Store Store
+}
+
+// New - returns a new rocket service
+func New(store Store) Service {
+	return Service{
+		Store: store,
+	}
 }
 
 // GetRocketByID - retrieves a rocket from the store by ID
