@@ -16,14 +16,21 @@ func Run() error {
 
 	// rktStore - the store responsible for holding
 	// our rocket inventory
-	rktStore := db.New()
-	// if err := rktStore.Migrate(); err != nil {
-	// 	return err
-	// }
+	rktStore, err := db.New()
+	if err != nil {
+		return err
+	}
+
+	// trigger our migration so that the database we are connecting
+	// to has the latest database schema changes
+	if err := rktStore.Migrate(); err != nil {
+		return err
+	}
 
 	// rktService the service responsible for updating our
 	// rocket inventory
 	rktService := rocket.New(rktStore)
+
 	// rktHandler instantiates a new gRPC handler
 	// which we pass our rktService into
 	rktHandler := grpc.New(rktService)
