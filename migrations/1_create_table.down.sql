@@ -1,2 +1,0 @@
--- TODO
-DROP TABLE rockets;
