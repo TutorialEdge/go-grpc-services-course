@@ -1,6 +1,8 @@
 package main
 
-import "log"
+import (
+	"log"
+)
 
 func Run() error {
 	// responsible for initializing and starting
