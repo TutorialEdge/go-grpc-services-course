@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package rocket;
+
+service RocketService {
+    rpc GetRocket (GetRocketRequest) returns (GetRocketResponse);
+}
+
+message GetRocketRequest {
+    int64 id = 1;
+}
+
+message GetRocketResponse {
+    Rocket rocket = 1;
+}
+
+message Rocket {
+    string type = 1;
+}
