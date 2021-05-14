@@ -48,3 +48,13 @@ func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt
 	log.Print("Get Rocket gRPC Endpoint Hit")
 	return &rkt.GetRocketResponse{}, nil
 }
+
+func (h Handler) AddRocket(ctx context.Context, req *rkt.AddRocketRequest) (*rkt.AddRocketResponse, error) {
+	log.Print("Get Rocket gRPC Endpoint Hit")
+	return &rkt.AddRocketResponse{}, nil
+}
+
+func (h Handler) DeleteRocket(ctx context.Context, req *rkt.DeleteRocketRequest) (*rkt.DeleteRocketResponse, error) {
+	log.Print("Get Rocket gRPC Endpoint Hit")
+	return &rkt.DeleteRocketResponse{}, nil
+}

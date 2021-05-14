@@ -1,4 +1,4 @@
-# github.com/TutorialEdge/tutorial-protos v0.0.0-20210514181248-a9a7a0dd21eb
+# github.com/TutorialEdge/tutorial-protos v0.0.0-20210514183856-48ab65e33253
 ## explicit
 github.com/TutorialEdge/tutorial-protos/rocket/v1
 # github.com/golang-migrate/migrate/v4 v4.14.1

@@ -2,10 +2,20 @@ syntax = "proto3";
 
 package rocket;
 
-service RocketService {
-    rpc GetRocket (GetRocketRequest) returns (GetRocketResponse);
+// Rocket represents the model of our rocket
+message Rocket {
+    string type = 1;
 }
 
+// RocketService - defines what endpoints we'll be exposing
+// from our gRPC rocket service
+service RocketService {
+    rpc GetRocket (GetRocketRequest) returns (GetRocketResponse);
+    rpc AddRocket (AddRocketRequest) returns (AddRocketResponse);
+    rpc DeleteRocket (DeleteRocketRequest) returns (DeleteRocketResponse);
+}
+
+// -- Get Rocket Handler -- 
 message GetRocketRequest {
     int64 id = 1;
 }
@@ -13,7 +23,27 @@ message GetRocketRequest {
 message GetRocketResponse {
     Rocket rocket = 1;
 }
+// -- -- 
 
-message Rocket {
-    string type = 1;
+// -- Add Rocket Handler -- 
+message AddRocketRequest {
+    Rocket rocket = 1;
 }
+
+message AddRocketResponse {
+    Rocket rocket = 1;
+}
+// -- -- 
+
+
+// -- Add Rocket Handler -- 
+message DeleteRocketRequest {
+    int64 id = 1;
+}
+
+message DeleteRocketResponse {
+    string status = 1;
+}
+// -- -- 
+
+
