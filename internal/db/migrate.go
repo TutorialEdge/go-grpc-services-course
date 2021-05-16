@@ -1,6 +1,8 @@
 package db
 
 import (
+	"log"
+
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -9,6 +11,7 @@ import (
 
 // Migrate - handles migrations on our database
 func (s *Store) Migrate() error {
+
 	// we have a database connection setup within our store
 	// we can reference the underlying sql.DB pointer using s.db.DB
 	driver, err := postgres.WithInstance(s.db.DB, &postgres.Config{})
@@ -27,9 +30,16 @@ func (s *Store) Migrate() error {
 		driver,
 	)
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
 
-	m.Steps(2)
+	if err := m.Up(); err != nil {
+		if err.Error() == "no change" {
+			log.Println("no change made by migration scripts")
+		} else {
+			return err
+		}
+	}
 	return nil
 }

@@ -1,0 +1,5 @@
+BEGIN;
+-- TODO
+DROP TABLE IF EXISTS rockets;
+
+COMMIT;
