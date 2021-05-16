@@ -23,12 +23,10 @@ func TestRocketService(t *testing.T) {
 			}, nil)
 
 		rocketService := New(rocketStoreMock)
-		rkt, err := rocketService.
-			GetRocketByID(
-				context.Background(),
-				id,
-			)
-
+		rkt, err := rocketService.GetRocketByID(
+			context.Background(),
+			id,
+		)
 		assert.NoError(t, err)
 		assert.Equal(t, "UUID-1", rkt.ID)
 	})
@@ -46,13 +44,12 @@ func TestRocketService(t *testing.T) {
 			}, nil)
 
 		rocketService := New(rocketStoreMock)
-		rkt, err := rocketService.
-			InsertRocket(
-				context.Background(),
-				Rocket{
-					ID: id,
-				},
-			)
+		rkt, err := rocketService.InsertRocket(
+			context.Background(),
+			Rocket{
+				ID: id,
+			},
+		)
 
 		assert.NoError(t, err)
 		assert.Equal(t, "UUID-1", rkt.ID)
@@ -67,11 +64,7 @@ func TestRocketService(t *testing.T) {
 			Return(nil)
 
 		rocketService := New(rocketStoreMock)
-		err := rocketService.
-			DeleteRocket(
-				id,
-			)
-
+		err := rocketService.DeleteRocket(id)
 		assert.NoError(t, err)
 	})
 }
