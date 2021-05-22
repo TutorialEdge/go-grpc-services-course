@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package rocket;
+
+// Rocket represents the model of our rocket
+message Rocket {
+    string id = 1;
+    string name = 2;
+    string type = 3;
+}
+
+// RocketService - defines what endpoints we'll be exposing
+// from our gRPC rocket service
+service RocketService {
+    rpc GetRocket (GetRocketRequest) returns (GetRocketResponse);
+    rpc AddRocket (AddRocketRequest) returns (AddRocketResponse);
+    rpc DeleteRocket (DeleteRocketRequest) returns (DeleteRocketResponse);
+}
+
+// -- Get Rocket Handler -- 
+message GetRocketRequest {
+    string id = 1;
+}
+
+message GetRocketResponse {
+    Rocket rocket = 1;
+}
+// -- -- 
+
+// -- Add Rocket Handler -- 
+message AddRocketRequest {
+    Rocket rocket = 1;
+}
+
+message AddRocketResponse {
+    Rocket rocket = 1;
+}
+// -- -- 
+
+
+// -- Add Rocket Handler -- 
+message DeleteRocketRequest {
+    string id = 1;
+}
+
+message DeleteRocketResponse {
+    string status = 1;
+}
+// -- -- 
+
+

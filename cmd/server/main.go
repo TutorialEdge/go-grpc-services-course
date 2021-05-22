@@ -5,6 +5,7 @@ import (
 
 	"github.com/TutorialEdge/go-grpc-services-course/internal/db"
 	"github.com/TutorialEdge/go-grpc-services-course/internal/rocket"
+	"github.com/TutorialEdge/go-grpc-services-course/internal/transport/grpc"
 )
 
 func Run() error {
@@ -20,7 +21,12 @@ func Run() error {
 		return err
 	}
 
-	_ = rocket.New(rocketStore)
+	rktService := rocket.New(rocketStore)
+	rktHandler := grpc.New(rktService)
+
+	if err := rktHandler.Serve(); err != nil {
+		return err
+	}
 
 	return nil
 }
