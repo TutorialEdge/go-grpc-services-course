@@ -2,7 +2,10 @@
 
 package rocket
 
-import "context"
+import (
+	"context"
+	"log"
+)
 
 // Rocket - should contain the definition of our
 // rocket
@@ -54,6 +57,7 @@ func (s Service) InsertRocket(ctx context.Context, rkt Rocket) (Rocket, error) {
 
 // DeleteRocket - deletes a rocket from our inventory
 func (s Service) DeleteRocket(ctx context.Context, id string) error {
+	log.Print(id)
 	err := s.Store.DeleteRocket(id)
 	if err != nil {
 		return err
