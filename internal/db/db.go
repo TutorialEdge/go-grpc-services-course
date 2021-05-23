@@ -3,6 +3,7 @@ package db
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/TutorialEdge/go-grpc-services-course/internal/rocket"
@@ -37,11 +38,12 @@ func New() (Store, error) {
 func (s Store) GetRocketByID(id string) (rocket.Rocket, error) {
 	var rkt rocket.Rocket
 	row := s.db.QueryRow(
-		`SELECT id FROM rockets where id=(?)::uuid`,
+		`SELECT id FROM rockets where id=$1;`,
 		id,
 	)
-	err := row.Scan(&rkt)
+	err := row.Scan(&rkt.ID)
 	if err != nil {
+		log.Print(err.Error())
 		return rocket.Rocket{}, err
 	}
 	return rkt, nil
