@@ -40,8 +40,18 @@ func New() (Store, error) {
 	}, nil
 }
 
+// GetRocketByID - retrieves a rocket from the database and returns it or an error.
 func (s Store) GetRocketByID(id string) (rocket.Rocket, error) {
-	return rocket.Rocket{}, nil
+	var rkt rocket.Rocket
+	row := s.db.QueryRow(
+		`SELECT id FROM rockets WHERE id=(?)::uuid`,
+		id,
+	)
+	err := row.Scan(&rkt)
+	if err != nil {
+		return rocket.Rocket{}, err
+	}
+	return rkt, nil
 }
 
 func (s Store) InsertRocket(rkt rocket.Rocket) (rocket.Rocket, error) {

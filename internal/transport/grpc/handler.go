@@ -48,8 +48,23 @@ func (h Handler) Serve() error {
 	return nil
 }
 
+// GetRocket - retrieves a rocket by id and returns the response.
 func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt.GetRocketResponse, error) {
-	return &rkt.GetRocketResponse{}, nil
+	log.Print("Get Rocket gRPC Endpoint Hit")
+
+	rocket, err := h.RocketService.GetRocketByID(ctx, req.Id)
+	if err != nil {
+		log.Print("Failed to retrieve rocket by ID")
+		return &rkt.GetRocketResponse{}, err
+	}
+
+	return &rkt.GetRocketResponse{
+		Rocket: &rkt.Rocket{
+			Id:   rocket.ID,
+			Name: rocket.Name,
+			Type: rocket.Type,
+		},
+	}, nil
 }
 
 func (h Handler) AddRocket(ctx context.Context, req *rkt.AddRocketRequest) (*rkt.AddRocketResponse, error) {
