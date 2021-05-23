@@ -67,8 +67,25 @@ func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt
 	}, nil
 }
 
+// AddRocket - adds a rocket to the database
 func (h Handler) AddRocket(ctx context.Context, req *rkt.AddRocketRequest) (*rkt.AddRocketResponse, error) {
-	return &rkt.AddRocketResponse{}, nil
+	log.Print("Add Rocket gRPC endpoint hit")
+	newRkt, err := h.RocketService.InsertRocket(ctx, rocket.Rocket{
+		ID:   req.Rocket.Id,
+		Type: req.Rocket.Type,
+		Name: req.Rocket.Name,
+	})
+	if err != nil {
+		log.Print("failed to insert rocket into database")
+		return &rkt.AddRocketResponse{}, err
+	}
+	return &rkt.AddRocketResponse{
+		Rocket: &rkt.Rocket{
+			Id:   newRkt.ID,
+			Type: newRkt.Type,
+			Name: newRkt.Name,
+		},
+	}, nil
 }
 
 func (h Handler) DeleteRocket(ctx context.Context, req *rkt.DeleteRocketRequest) (*rkt.DeleteRocketResponse, error) {
