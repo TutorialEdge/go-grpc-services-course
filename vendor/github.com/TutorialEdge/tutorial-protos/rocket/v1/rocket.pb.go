@@ -23,7 +23,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-// Rocket represents the model of our rocket
 type Rocket struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -37,7 +36,7 @@ func (m *Rocket) Reset()         { *m = Rocket{} }
 func (m *Rocket) String() string { return proto.CompactTextString(m) }
 func (*Rocket) ProtoMessage()    {}
 func (*Rocket) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{0}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{0}
 }
 func (m *Rocket) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Rocket.Unmarshal(m, b)
@@ -78,7 +77,7 @@ func (m *Rocket) GetType() string {
 	return ""
 }
 
-// -- Get Rocket Handler --
+// -- Get Rocket Message Types --
 type GetRocketRequest struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -90,7 +89,7 @@ func (m *GetRocketRequest) Reset()         { *m = GetRocketRequest{} }
 func (m *GetRocketRequest) String() string { return proto.CompactTextString(m) }
 func (*GetRocketRequest) ProtoMessage()    {}
 func (*GetRocketRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{1}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{1}
 }
 func (m *GetRocketRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetRocketRequest.Unmarshal(m, b)
@@ -128,7 +127,7 @@ func (m *GetRocketResponse) Reset()         { *m = GetRocketResponse{} }
 func (m *GetRocketResponse) String() string { return proto.CompactTextString(m) }
 func (*GetRocketResponse) ProtoMessage()    {}
 func (*GetRocketResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{2}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{2}
 }
 func (m *GetRocketResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetRocketResponse.Unmarshal(m, b)
@@ -155,7 +154,7 @@ func (m *GetRocketResponse) GetRocket() *Rocket {
 	return nil
 }
 
-// -- Add Rocket Handler --
+// -- Add Rocket Message Types --
 type AddRocketRequest struct {
 	Rocket               *Rocket  `protobuf:"bytes,1,opt,name=rocket,proto3" json:"rocket,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -167,7 +166,7 @@ func (m *AddRocketRequest) Reset()         { *m = AddRocketRequest{} }
 func (m *AddRocketRequest) String() string { return proto.CompactTextString(m) }
 func (*AddRocketRequest) ProtoMessage()    {}
 func (*AddRocketRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{3}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{3}
 }
 func (m *AddRocketRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AddRocketRequest.Unmarshal(m, b)
@@ -205,7 +204,7 @@ func (m *AddRocketResponse) Reset()         { *m = AddRocketResponse{} }
 func (m *AddRocketResponse) String() string { return proto.CompactTextString(m) }
 func (*AddRocketResponse) ProtoMessage()    {}
 func (*AddRocketResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{4}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{4}
 }
 func (m *AddRocketResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AddRocketResponse.Unmarshal(m, b)
@@ -232,9 +231,9 @@ func (m *AddRocketResponse) GetRocket() *Rocket {
 	return nil
 }
 
-// -- Add Rocket Handler --
+// -- Delete Rocket Message Types --
 type DeleteRocketRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Rocket               *Rocket  `protobuf:"bytes,1,opt,name=rocket,proto3" json:"rocket,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -244,7 +243,7 @@ func (m *DeleteRocketRequest) Reset()         { *m = DeleteRocketRequest{} }
 func (m *DeleteRocketRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteRocketRequest) ProtoMessage()    {}
 func (*DeleteRocketRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{5}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{5}
 }
 func (m *DeleteRocketRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteRocketRequest.Unmarshal(m, b)
@@ -264,11 +263,11 @@ func (m *DeleteRocketRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DeleteRocketRequest proto.InternalMessageInfo
 
-func (m *DeleteRocketRequest) GetId() string {
+func (m *DeleteRocketRequest) GetRocket() *Rocket {
 	if m != nil {
-		return m.Id
+		return m.Rocket
 	}
-	return ""
+	return nil
 }
 
 type DeleteRocketResponse struct {
@@ -282,7 +281,7 @@ func (m *DeleteRocketResponse) Reset()         { *m = DeleteRocketResponse{} }
 func (m *DeleteRocketResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteRocketResponse) ProtoMessage()    {}
 func (*DeleteRocketResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rocket_f25c74bedb1acf37, []int{6}
+	return fileDescriptor_rocket_3705a7c97e681917, []int{6}
 }
 func (m *DeleteRocketResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteRocketResponse.Unmarshal(m, b)
@@ -457,9 +456,9 @@ var _RocketService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "rocket/v1/rocket.proto",
 }
 
-func init() { proto.RegisterFile("rocket/v1/rocket.proto", fileDescriptor_rocket_f25c74bedb1acf37) }
+func init() { proto.RegisterFile("rocket/v1/rocket.proto", fileDescriptor_rocket_3705a7c97e681917) }
 
-var fileDescriptor_rocket_f25c74bedb1acf37 = []byte{
+var fileDescriptor_rocket_3705a7c97e681917 = []byte{
 	// 264 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2b, 0xca, 0x4f, 0xce,
 	0x4e, 0x2d, 0xd1, 0x2f, 0x33, 0xd4, 0x87, 0xb0, 0xf4, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2, 0x85, 0xd8,
@@ -470,12 +469,12 @@ var fileDescriptor_rocket_f25c74bedb1acf37 = []byte{
 	0x62, 0x0c, 0xb3, 0x94, 0xac, 0xb9, 0x04, 0x91, 0xd4, 0x14, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x0a,
 	0xa9, 0x71, 0x41, 0x1d, 0x01, 0x56, 0xc8, 0x6d, 0xc4, 0xa7, 0x07, 0x75, 0x21, 0x54, 0x1d, 0xcc,
 	0x89, 0x56, 0x5c, 0x02, 0x8e, 0x29, 0x29, 0xa8, 0x16, 0x10, 0xab, 0xd7, 0x9a, 0x4b, 0x10, 0x49,
-	0x2f, 0x89, 0x16, 0xab, 0x72, 0x09, 0xbb, 0xa4, 0xe6, 0xa4, 0x96, 0xa4, 0xe2, 0xf7, 0x9c, 0x1e,
-	0x97, 0x08, 0xaa, 0x32, 0xa8, 0x35, 0x62, 0x5c, 0x6c, 0xc5, 0x25, 0x89, 0x25, 0xa5, 0xc5, 0x50,
-	0xb5, 0x50, 0x9e, 0xd1, 0x3d, 0x46, 0x2e, 0x5e, 0x88, 0xd2, 0xe0, 0xd4, 0xa2, 0xb2, 0xcc, 0xe4,
-	0x54, 0x21, 0x07, 0x2e, 0x4e, 0x78, 0xf0, 0x08, 0x49, 0xc0, 0x5c, 0x83, 0x1e, 0xaa, 0x52, 0x92,
-	0x58, 0x64, 0xa0, 0x76, 0x39, 0x70, 0x71, 0xc2, 0xfd, 0x89, 0x30, 0x01, 0x3d, 0xd8, 0x10, 0x26,
-	0x60, 0x06, 0x8a, 0x27, 0x17, 0x0f, 0xb2, 0x2f, 0x84, 0xa4, 0x61, 0x4a, 0xb1, 0x04, 0x81, 0x94,
-	0x0c, 0x76, 0x49, 0x88, 0x51, 0x49, 0x6c, 0xe0, 0x24, 0x66, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff,
-	0x53, 0x4d, 0x8b, 0xf1, 0x7c, 0x02, 0x00, 0x00,
+	0x2f, 0x89, 0x16, 0xdb, 0x72, 0x09, 0xbb, 0xa4, 0xe6, 0xa4, 0x96, 0xa4, 0x92, 0x67, 0xb7, 0x1e,
+	0x97, 0x08, 0xaa, 0x76, 0xa8, 0xf5, 0x62, 0x5c, 0x6c, 0xc5, 0x25, 0x89, 0x25, 0xa5, 0xc5, 0xd0,
+	0x00, 0x82, 0xf2, 0x8c, 0xee, 0x31, 0x72, 0xf1, 0x42, 0x94, 0x06, 0xa7, 0x16, 0x95, 0x65, 0x26,
+	0xa7, 0x0a, 0x39, 0x70, 0x71, 0xc2, 0x83, 0x4d, 0x48, 0x02, 0x66, 0x0d, 0x7a, 0x68, 0x4b, 0x49,
+	0x62, 0x91, 0x81, 0xda, 0xe5, 0xc0, 0xc5, 0x09, 0xf7, 0x3f, 0xc2, 0x04, 0xf4, 0xe0, 0x44, 0x98,
+	0x80, 0x19, 0x58, 0x9e, 0x5c, 0x3c, 0xc8, 0xbe, 0x10, 0x92, 0x86, 0x29, 0xc5, 0x12, 0x34, 0x52,
+	0x32, 0xd8, 0x25, 0x21, 0x46, 0x25, 0xb1, 0x81, 0x93, 0x9e, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff,
+	0x9b, 0xdb, 0x06, 0x00, 0x94, 0x02, 0x00, 0x00,
 }

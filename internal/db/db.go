@@ -7,26 +7,34 @@ import (
 	"os"
 
 	"github.com/TutorialEdge/go-grpc-services-course/internal/rocket"
-
 	"github.com/jmoiron/sqlx"
+	uuid "github.com/satori/go.uuid"
 )
 
-// DB
 type Store struct {
 	db *sqlx.DB
 }
 
-// New - returns a new Store
+// New - returns a new store or error
 func New() (Store, error) {
 	dbUsername := os.Getenv("DB_USERNAME")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")
 	dbTable := os.Getenv("DB_TABLE")
 	dbPort := os.Getenv("DB_PORT")
+	dbSSLMode := os.Getenv("DB_SSL_MODE")
 
-	connectString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", dbHost, dbPort, dbUsername, dbTable, dbPassword)
+	connectionString := fmt.Sprintf(
+		"host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+		dbHost,
+		dbPort,
+		dbUsername,
+		dbTable,
+		dbPassword,
+		dbSSLMode,
+	)
 
-	db, err := sqlx.Connect("postgres", connectString)
+	db, err := sqlx.Connect("postgres", connectionString)
 	if err != nil {
 		return Store{}, err
 	}
@@ -35,13 +43,14 @@ func New() (Store, error) {
 	}, nil
 }
 
+// GetRocketByID - retrieves a rocket from the database by id
 func (s Store) GetRocketByID(id string) (rocket.Rocket, error) {
 	var rkt rocket.Rocket
 	row := s.db.QueryRow(
-		`SELECT id FROM rockets where id=$1;`,
+		`SELECT id, type, name FROM rockets where id=$1;`,
 		id,
 	)
-	err := row.Scan(&rkt.ID)
+	err := row.Scan(&rkt.ID, &rkt.Type, &rkt.Name)
 	if err != nil {
 		log.Print(err.Error())
 		return rocket.Rocket{}, err
@@ -49,10 +58,11 @@ func (s Store) GetRocketByID(id string) (rocket.Rocket, error) {
 	return rkt, nil
 }
 
+// InsertRocket - inserts a rocket into the rockets table
 func (s Store) InsertRocket(rkt rocket.Rocket) (rocket.Rocket, error) {
 	_, err := s.db.NamedQuery(
-		`INSERT INTO rockets 
-		(id, name, type) 
+		`INSERT INTO rockets
+		(id, name, type)
 		VALUES (:id, :name, :type)`,
 		rkt,
 	)
@@ -66,13 +76,16 @@ func (s Store) InsertRocket(rkt rocket.Rocket) (rocket.Rocket, error) {
 	}, nil
 }
 
+// DeleteRocket - attempts to delete a rocket from the database return err if error
 func (s Store) DeleteRocket(id string) error {
-	rkt := rocket.Rocket{
-		ID: id,
+	uid, err := uuid.FromString(id)
+	if err != nil {
+		return err
 	}
-	_, err := s.db.NamedQuery(
-		`delete from rockets where id=:id`,
-		rkt,
+
+	_, err = s.db.Exec(
+		`DELETE FROM rockets where id = $1`,
+		uid,
 	)
 	if err != nil {
 		return err

@@ -1,36 +1,44 @@
+//go:generate mockgen -destination=rocket_mocks_test.go -package=rocket github.com/TutorialEdge/go-grpc-services-course/internal/rocket Store
+
 package rocket
 
-// Rocket - should contain things like the ID for the rocket,
-// the name for the rocket and the type of rocket. I.e. Falcon Heavy
+import (
+	"context"
+	"log"
+)
+
+// Rocket - should contain the definition of our
+// rocket
 type Rocket struct {
-	ID   string
-	Name string
-	Type string
+	ID      string
+	Name    string
+	Type    string
+	Flights int
 }
 
-// Store - defines the interface we need to satisfy for our
-// service to work correctly
+// Store - defines the interface we expect
+// our database implementation to follow
 type Store interface {
 	GetRocketByID(id string) (Rocket, error)
 	InsertRocket(rkt Rocket) (Rocket, error)
 	DeleteRocket(id string) error
 }
 
-// Service - our rocket service, used for updating our
-// rocket inventory
+// Service - our rocket service, responsible for
+// updating the rocket inventory
 type Service struct {
 	Store Store
 }
 
-// New - returns a new rocket service
+// New - returns a new instance of our rocket service
 func New(store Store) Service {
 	return Service{
 		Store: store,
 	}
 }
 
-// GetRocketByID - retrieves a rocket from the store by ID
-func (s Service) GetRocketByID(id string) (Rocket, error) {
+// GetRocketByID - retrieves a rocket based on the ID from the store
+func (s Service) GetRocketByID(ctx context.Context, id string) (Rocket, error) {
 	rkt, err := s.Store.GetRocketByID(id)
 	if err != nil {
 		return Rocket{}, err
@@ -38,8 +46,8 @@ func (s Service) GetRocketByID(id string) (Rocket, error) {
 	return rkt, nil
 }
 
-// AddRocket - Adds a rocket to our store
-func (s Service) AddRocket(rkt Rocket) (Rocket, error) {
+// InsertRocket - inserts a new rocket into the store.
+func (s Service) InsertRocket(ctx context.Context, rkt Rocket) (Rocket, error) {
 	rkt, err := s.Store.InsertRocket(rkt)
 	if err != nil {
 		return Rocket{}, err
@@ -47,9 +55,9 @@ func (s Service) AddRocket(rkt Rocket) (Rocket, error) {
 	return rkt, nil
 }
 
-// DeleteRocket - deletes a rocket - most likely rapid
-// unscheduled disassembly
-func (s Service) DeleteRocket(id string) error {
+// DeleteRocket - deletes a rocket from our inventory
+func (s Service) DeleteRocket(ctx context.Context, id string) error {
+	log.Print(id)
 	err := s.Store.DeleteRocket(id)
 	if err != nil {
 		return err

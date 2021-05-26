@@ -8,46 +8,31 @@ import (
 	"github.com/TutorialEdge/go-grpc-services-course/internal/transport/grpc"
 )
 
-// Run - handles the setup and starting of our application
-// using this approach makes testing easier and we can more
-// gracefully handle errors
 func Run() error {
-	log.Println("Starting up Rocket gRPC Service")
-
-	// rktStore - the store responsible for holding
-	// our rocket inventory
-	rktStore, err := db.New()
+	// responsible for initializing and starting
+	// our gRPC server
+	rocketStore, err := db.New()
 	if err != nil {
 		return err
 	}
-
-	// trigger our migration so that the database we are connecting
-	// to has the latest database schema changes
-	if err := rktStore.Migrate(); err != nil {
+	err = rocketStore.Migrate()
+	if err != nil {
+		log.Println("Failed to run migrations")
 		return err
 	}
 
-	// rktService the service responsible for updating our
-	// rocket inventory
-	rktService := rocket.New(rktStore)
-
-	// rktHandler instantiates a new gRPC handler
-	// which we pass our rktService into
+	rktService := rocket.New(rocketStore)
 	rktHandler := grpc.New(rktService)
 
-	// Start our gRPC listener, this is a blocking
-	// function call so it should be the last thing
-	// we run in this function
 	if err := rktHandler.Serve(); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 func main() {
-	// our main function is super small, only responsible
-	// for calling Run and then handling the error
 	if err := Run(); err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 }

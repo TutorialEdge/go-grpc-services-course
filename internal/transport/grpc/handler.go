@@ -10,16 +10,15 @@ import (
 	"google.golang.org/grpc"
 )
 
-// RocketService - defines the rocket service interface
-// which any service passed in to our Handler will need to
-// conform to
+// RocketService - define the interface that the concrete implementation
+// has to adhere to
 type RocketService interface {
-	GetRocketByID(id string) (rocket.Rocket, error)
-	AddRocket(rkt rocket.Rocket) (rocket.Rocket, error)
-	DeleteRocket(id string) error
+	GetRocketByID(ctx context.Context, id string) (rocket.Rocket, error)
+	InsertRocket(ctx context.Context, rkt rocket.Rocket) (rocket.Rocket, error)
+	DeleteRocket(ctx context.Context, id string) error
 }
 
-// Handler -
+// Handler - will handle incoming gRPC requests
 type Handler struct {
 	RocketService RocketService
 }
@@ -31,30 +30,34 @@ func New(rktService RocketService) Handler {
 	}
 }
 
-// Serve - starts out gRPC listeners
 func (h Handler) Serve() error {
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Print("could not listen on port 50051")
+		return err
 	}
 
 	grpcServer := grpc.NewServer()
 	rkt.RegisterRocketServiceServer(grpcServer, &h)
 
 	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %s", err)
+		log.Printf("failed to serve: %s\n", err)
 		return err
 	}
 
 	return nil
 }
 
+// GetRocket - retrieves a rocket by id and returns the response.
 func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt.GetRocketResponse, error) {
 	log.Print("Get Rocket gRPC Endpoint Hit")
-	rocket, err := h.RocketService.GetRocketByID(req.Id)
+
+	rocket, err := h.RocketService.GetRocketByID(ctx, req.Id)
 	if err != nil {
+		log.Print("Failed to retrieve rocket by ID")
 		return &rkt.GetRocketResponse{}, err
 	}
+
 	return &rkt.GetRocketResponse{
 		Rocket: &rkt.Rocket{
 			Id:   rocket.ID,
@@ -64,14 +67,16 @@ func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt
 	}, nil
 }
 
+// AddRocket - adds a rocket to the database
 func (h Handler) AddRocket(ctx context.Context, req *rkt.AddRocketRequest) (*rkt.AddRocketResponse, error) {
-	log.Print("Add Rocket gRPC Endpoint Hit")
-	newRkt, err := h.RocketService.AddRocket(rocket.Rocket{
+	log.Print("Add Rocket gRPC endpoint hit")
+	newRkt, err := h.RocketService.InsertRocket(ctx, rocket.Rocket{
 		ID:   req.Rocket.Id,
-		Name: req.Rocket.Name,
 		Type: req.Rocket.Type,
+		Name: req.Rocket.Name,
 	})
 	if err != nil {
+		log.Print("failed to insert rocket into database")
 		return &rkt.AddRocketResponse{}, err
 	}
 	return &rkt.AddRocketResponse{
@@ -83,17 +88,14 @@ func (h Handler) AddRocket(ctx context.Context, req *rkt.AddRocketRequest) (*rkt
 	}, nil
 }
 
+// DeleteRocket - handler for deleting a rocket
 func (h Handler) DeleteRocket(ctx context.Context, req *rkt.DeleteRocketRequest) (*rkt.DeleteRocketResponse, error) {
-	log.Print("Delete Rocket gRPC Endpoint Hit")
-	err := h.RocketService.DeleteRocket(req.Id)
+	log.Print("delete rocket gRPC endpoint hit")
+	err := h.RocketService.DeleteRocket(ctx, req.Rocket.Id)
 	if err != nil {
-		return &rkt.DeleteRocketResponse{
-			Status: err.Error(),
-		}, err
+		return &rkt.DeleteRocketResponse{}, err
 	}
-
 	return &rkt.DeleteRocketResponse{
-		Status: "successfully deleted",
+		Status: "successfully delete rocket",
 	}, nil
-
 }

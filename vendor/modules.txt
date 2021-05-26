@@ -1,6 +1,8 @@
-# github.com/TutorialEdge/tutorial-protos v0.0.0-20210516110155-65bba8412ad0
+# github.com/TutorialEdge/tutorial-protos v0.0.0-20210523172951-62ac41559c58
 ## explicit
 github.com/TutorialEdge/tutorial-protos/rocket/v1
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
 # github.com/golang-migrate/migrate/v4 v4.14.1
 ## explicit
 github.com/golang-migrate/migrate/v4
@@ -10,25 +12,40 @@ github.com/golang-migrate/migrate/v4/internal/url
 github.com/golang-migrate/migrate/v4/source
 github.com/golang-migrate/migrate/v4/source/file
 github.com/golang-migrate/migrate/v4/source/httpfs
+# github.com/golang/mock v1.5.0
+## explicit
+github.com/golang/mock/gomock
 # github.com/golang/protobuf v1.4.3
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
+# github.com/google/uuid v1.1.2
+## explicit
 # github.com/hashicorp/errwrap v1.0.0
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-multierror v1.1.0
 github.com/hashicorp/go-multierror
-# github.com/jmoiron/sqlx v1.2.0
+# github.com/jmoiron/sqlx v1.3.4
 ## explicit
 github.com/jmoiron/sqlx
 github.com/jmoiron/sqlx/reflectx
-# github.com/lib/pq v1.8.0
+# github.com/lib/pq v1.10.1
 ## explicit
 github.com/lib/pq
 github.com/lib/pq/oid
 github.com/lib/pq/scram
+# github.com/magiconair/properties v1.8.5
+## explicit
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/satori/go.uuid v1.2.0
+## explicit
+github.com/satori/go.uuid
+# github.com/stretchr/testify v1.7.0
+## explicit
+github.com/stretchr/testify/assert
 # golang.org/x/net v0.0.0-20201029221708-28c70e62bb1d
 golang.org/x/net/context
 golang.org/x/net/http/httpguts
@@ -119,3 +136,5 @@ google.golang.org/protobuf/runtime/protoimpl
 google.golang.org/protobuf/types/known/anypb
 google.golang.org/protobuf/types/known/durationpb
 google.golang.org/protobuf/types/known/timestamppb
+# gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+gopkg.in/yaml.v3
