@@ -1,3 +1,5 @@
+//go:generate mockgen -destination=grpc_mocks_test.go -package=grpc github.com/TutorialEdge/go-grpc-services-course/internal/transport/grpc RocketService
+
 package grpc
 
 import (
@@ -7,7 +9,10 @@ import (
 
 	"github.com/TutorialEdge/go-grpc-services-course/internal/rocket"
 	rkt "github.com/TutorialEdge/tutorial-protos/rocket/v1"
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // RocketService - define the interface that the concrete implementation
@@ -52,6 +57,12 @@ func (h Handler) Serve() error {
 func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt.GetRocketResponse, error) {
 	log.Print("Get Rocket gRPC Endpoint Hit")
 
+	if _, err := uuid.Parse(req.Id); err != nil {
+		errorStatus := status.Error(codes.InvalidArgument, "UUID is not valid")
+		log.Print("Given UUID is not valid")
+		return &rkt.GetRocketResponse{}, errorStatus
+	}
+
 	rocket, err := h.RocketService.GetRocketByID(ctx, req.Id)
 	if err != nil {
 		log.Print("Failed to retrieve rocket by ID")
@@ -70,6 +81,13 @@ func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt
 // AddRocket - adds a rocket to the database
 func (h Handler) AddRocket(ctx context.Context, req *rkt.AddRocketRequest) (*rkt.AddRocketResponse, error) {
 	log.Print("Add Rocket gRPC endpoint hit")
+
+	if _, err := uuid.Parse(req.Rocket.Id); err != nil {
+		errorStatus := status.Error(codes.InvalidArgument, "UUID is not valid")
+		log.Print("Given UUID is not valid")
+		return &rkt.AddRocketResponse{}, errorStatus
+	}
+
 	newRkt, err := h.RocketService.InsertRocket(ctx, rocket.Rocket{
 		ID:   req.Rocket.Id,
 		Type: req.Rocket.Type,
