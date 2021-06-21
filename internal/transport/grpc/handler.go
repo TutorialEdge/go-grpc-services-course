@@ -58,9 +58,12 @@ func (h Handler) GetRocket(ctx context.Context, req *rkt.GetRocketRequest) (*rkt
 	log.Print("Get Rocket gRPC Endpoint Hit")
 
 	if _, err := uuid.Parse(req.Id); err != nil {
-		errorStatus := status.Error(codes.InvalidArgument, "UUID is not valid")
 		log.Print("Given UUID is not valid")
-		return &rkt.GetRocketResponse{}, errorStatus
+		errorStatus := status.New(codes.InvalidArgument, "UUID is not valid")
+		details, err := errorStatus.WithDetails(
+			"UUID is not valid",
+		)
+		return &rkt.GetRocketResponse{}, details.Err()
 	}
 
 	rocket, err := h.RocketService.GetRocketByID(ctx, req.Id)

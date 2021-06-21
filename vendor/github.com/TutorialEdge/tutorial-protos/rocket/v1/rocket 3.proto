@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package rocket;
+
+message Rocket {
+    string id = 1;
+    string name = 2;
+    string type = 3;
+}
+
+service RocketService {
+    rpc GetRocket (GetRocketRequest) returns (GetRocketResponse);
+    rpc AddRocket (AddRocketRequest) returns (AddRocketResponse);
+    rpc DeleteRocket (DeleteRocketRequest) returns (DeleteRocketResponse);
+}
+
+// -- Get Rocket Message Types --
+message GetRocketRequest {
+    string id = 1;
+}
+
+message GetRocketResponse {
+    Rocket rocket = 1;
+}
+
+// -- Add Rocket Message Types --
+message AddRocketRequest {
+    Rocket rocket = 1;
+}
+
+message AddRocketResponse {
+    Rocket rocket = 1;
+}
+
+// -- Delete Rocket Message Types --
+message DeleteRocketRequest {
+    Rocket rocket = 1;
+}
+
+message DeleteRocketResponse {
+    string status = 1;
+}
